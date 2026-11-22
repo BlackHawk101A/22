@@ -37,6 +37,10 @@ solution(Active, S) :-
     candidate(S),
     forall(member(N, Active), clue(N, S)).
 
+count_solutions(Active, N) :-
+    findall(S, solution(Active, S), L),
+    length(L, N).
+
 % ---------- main ----------
 main :-
     once(solution([1,2,3,4,5,6,7,8,9], S)),
