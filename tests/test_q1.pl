@@ -1,6 +1,6 @@
 % Run from the root folder with:
 %   swipl -q -g run_tests -t halt tests/test_q1.pl
-:- consult('../code/id_q1.pl').
+:- consult('../code/22_q1.pl').
 
 all_clues([1,2,3,4,5,6,7,8,9]).
 
