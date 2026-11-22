@@ -80,3 +80,38 @@
   (newline)
   (display (postorder-list tree))
   (newline))
+
+
+;; tree-height : tree -> integer
+;; Returns the height of tree (0 for empty tree, 1 + max height of children otherwise).
+(define (tree-height tree)
+  (if (null? tree)
+      0
+      (+ 1 (max (tree-height (node-left tree))
+                (tree-height (node-right tree))))))
+
+;; leaf-count : tree -> integer
+;; Returns the number of leaves in tree tail-recursively using a worklist accumulator.
+(define (leaf-count tree)
+  (let loop ((stack (if (null? tree) '() (list tree)))
+             (acc 0))
+    (if (null? stack)
+        acc
+        (let* ((curr (car stack))
+               (rest (cdr stack))
+               (left (node-left curr))
+               (right (node-right curr)))
+          (cond ((and (null? left) (null? right))
+                 (loop rest (+ acc 1)))
+                ((null? left)
+                 (loop (cons right rest) acc))
+                ((null? right)
+                 (loop (cons left rest) acc))
+                (else
+                 (loop (cons left (cons right rest)) acc)))))))
+
+;; print-height-and-leaves : tree -> void
+;; Prints the list (height leaf-count) on one line followed by a newline.
+(define (print-height-and-leaves tree)
+  (display (list (tree-height tree) (leaf-count tree)))
+  (newline))
