@@ -77,3 +77,15 @@ expr_to_string(op(Op, Left, Right), Str) :-
     format_right(Right, ParentPrec, RightStr),
     format(string(Str), "~s~w~s", [LeftStr, Op, RightStr]).
 
+% generate_equation(+List, -Equation)
+% True when Equation is a valid canonical SWI-Prolog string "L=R"
+% formed by splitting List into two non-empty contiguous parts whose
+% arithmetic expressions evaluate to the same integer value.
+% Fails cleanly if no valid equation exists (including lists of length 0 or 1).
+generate_equation(List, Equation) :-
+    split_list(List, LeftNums, RightNums),
+    build_expr(LeftNums, LeftTree, Val),
+    build_expr(RightNums, RightTree, Val),
+    expr_to_string(LeftTree, LeftStr),
+    expr_to_string(RightTree, RightStr),
+    format(string(Equation), "~s=~s", [LeftStr, RightStr]).
