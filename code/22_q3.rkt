@@ -47,3 +47,36 @@
 (define (print-inorder tree)
   (display (inorder-list tree))
   (newline))
+
+
+;; preorder-list : tree -> list
+;; Returns the values of tree in preorder (node, left, right) using
+;; right-to-left accumulator passing.
+(define (preorder-list tree)
+  (let loop ((t tree) (acc '()))
+    (if (null? t)
+        acc
+        (cons (node-val t)
+              (loop (node-left t)
+                    (loop (node-right t) acc))))))
+
+;; postorder-list : tree -> list
+;; Returns the values of tree in postorder (left, right, node) using
+;; right-to-left accumulator passing.
+(define (postorder-list tree)
+  (let loop ((t tree) (acc '()))
+    (if (null? t)
+        acc
+        (loop (node-left t)
+              (loop (node-right t)
+                    (cons (node-val t) acc))))))
+
+;; print-all-traversals : tree -> void
+;; Prints the inorder, preorder, and postorder traversal lists of tree on three lines.
+(define (print-all-traversals tree)
+  (display (inorder-list tree))
+  (newline)
+  (display (preorder-list tree))
+  (newline)
+  (display (postorder-list tree))
+  (newline))
