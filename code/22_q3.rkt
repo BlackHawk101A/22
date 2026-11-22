@@ -31,3 +31,19 @@
         acc
         (loop (cdr rev-xs) (cons (car rev-xs) acc)))))
 
+;; inorder-list : tree -> list
+;; Returns the values of tree in inorder (left, node, right) using
+;; right-to-left accumulator passing so no list concatenation is needed.
+(define (inorder-list tree)
+  (let loop ((t tree) (acc '()))
+    (if (null? t)
+        acc
+        (loop (node-left t)
+              (cons (node-val t)
+                    (loop (node-right t) acc))))))
+
+;; print-inorder : tree -> void
+;; Prints the inorder traversal list of tree on one line followed by a newline.
+(define (print-inorder tree)
+  (display (inorder-list tree))
+  (newline))
