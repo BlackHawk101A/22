@@ -89,3 +89,17 @@ generate_equation(List, Equation) :-
     expr_to_string(LeftTree, LeftStr),
     expr_to_string(RightTree, RightStr),
     format(string(Equation), "~s=~s", [LeftStr, RightStr]).
+
+% all_equations(+List, -Equations)
+% True when Equations is the duplicate-free list of all valid canonical
+% equation strings for List, sorted in standard order of terms via sort/2.
+% Unifies Equations with [] if no valid equation exists.
+all_equations(List, Equations) :-
+    findall(Eq, generate_equation(List, Eq), RawEquations),
+    sort(RawEquations, Equations).
+
+% count_equations(+List, -N)
+% True when N is the total number of distinct valid equations for List.
+count_equations(List, N) :-
+    all_equations(List, Equations),
+    length(Equations, N).
