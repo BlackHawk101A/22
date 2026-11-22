@@ -88,3 +88,43 @@
   (newline)
   (display (postorder-acc tree '()))
   (newline))
+
+;; ---------------------------------------------------------------
+;; S1.c  Height and leaf count
+;; ---------------------------------------------------------------
+
+; height : Tree -> Number
+; Base case: the empty tree has height 0.
+; Recursive step: a node is 1 taller than the taller of its two
+;   subtrees, so a single node has height 1 + max(0, 0) = 1.
+; Not tail-recursive: + and max wait for both recursive results.
+(define (height tree)
+  (if (null? tree)
+      0
+      (+ 1 (max (height (node-left tree))
+                (height (node-right tree))))))
+
+; leaf? : Tree -> Boolean
+; A leaf is a non-empty node whose left and right subtrees are both ().
+; The empty tree is not a leaf.
+(define (leaf? tree)
+  (and (pair? tree)
+       (null? (node-left tree))
+       (null? (node-right tree))))
+
+; leaf-count : Tree -> Number
+; Base case: the empty tree has 0 leaves; a leaf counts as 1.
+; Recursive step: any other node has as many leaves as its two
+;   subtrees together (the node itself is not a leaf).
+; Not tail-recursive: + waits for both recursive results.
+(define (leaf-count tree)
+  (cond ((null? tree) 0)
+        ((leaf? tree) 1)
+        (else (+ (leaf-count (node-left tree))
+                 (leaf-count (node-right tree))))))
+
+; print-height-and-leaves : Tree -> Void
+; Displays the list (height leaf-count) of tree, then a newline.
+(define (print-height-and-leaves tree)
+  (display (list (height tree) (leaf-count tree)))
+  (newline))
