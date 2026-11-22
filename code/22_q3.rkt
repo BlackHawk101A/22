@@ -45,3 +45,46 @@
 (define (print-inorder tree)
   (display (inorder-acc tree '()))
   (newline))
+
+;; ---------------------------------------------------------------
+;; S1.b  Preorder, postorder, and all three traversals
+;; ---------------------------------------------------------------
+
+; preorder-acc : Tree List -> List
+; Returns the preorder values of tree placed in front of acc.
+; Base case: the empty tree adds nothing, so the result is acc.
+; Recursive step: the right subtree's values go in front of acc, the
+;   left subtree's values go in front of those, and the node's value
+;   is consed on last, so it ends up first (node -> left -> right).
+; Not tail-recursive: cons waits for the result of the left call.
+(define (preorder-acc tree acc)
+  (if (null? tree)
+      acc
+      (cons (node-value tree)
+            (preorder-acc (node-left tree)
+                          (preorder-acc (node-right tree) acc)))))
+
+; postorder-acc : Tree List -> List
+; Returns the postorder values of tree placed in front of acc.
+; Base case: the empty tree adds nothing, so the result is acc.
+; Recursive step: the node's value is consed onto acc first (so it
+;   ends up after both subtrees), then the right subtree's values go
+;   in front of it, then the left subtree's (left -> right -> node).
+; The outer call on the left subtree is a tail call.
+(define (postorder-acc tree acc)
+  (if (null? tree)
+      acc
+      (postorder-acc (node-left tree)
+                     (postorder-acc (node-right tree)
+                                    (cons (node-value tree) acc)))))
+
+; print-all-traversals : Tree -> Void
+; Displays the inorder, preorder and postorder lists of tree,
+; one per line, each followed by a newline.
+(define (print-all-traversals tree)
+  (display (inorder-acc tree '()))
+  (newline)
+  (display (preorder-acc tree '()))
+  (newline)
+  (display (postorder-acc tree '()))
+  (newline))
